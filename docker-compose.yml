@@ -1,25 +1,18 @@
 version: '3.8'
 
 services:
-  api:
-    build: ./backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend/app:/app
-      - ./backend/uploads:/app/uploads
-    environment:
-      - PYTHONUNBUFFERED=1
-    restart: unless-stopped
-
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:8000
+      - VITE_API_URL=http://backend:8000
     depends_on:
-      - api 
+      - backend
+
+  backend:
+    build: 
+      context: ./backend
+    ports:
+      - "8000:8000" 
